@@ -10,27 +10,32 @@
     rel="stylesheet">
   <style>
     body {
-        background-color: #121b44;
+      background-color: #121b44;
       font-family: "Poppins", sans-serif;
     }
 
     .form-container {
       margin-bottom: 20px;
       padding: 15px;
-      //background-color: #182f96;
-      //border: 1px solid #ccc;
       border-radius: 5px;
       display: flex;
       flex-direction: row;
       gap: 10px;
     }
 
+    @media (pointer: coarse) {
+      /* mobile device */
+      .form-container {
+        flex-direction: column;
+      }
+    }
+
     .form-container>div {
       flex: 1;
       padding: 10px;
-       border-radius: 15px;
-       background-color: #121b44;
-       border: 5px solid #FFCE00;
+      border-radius: 15px;
+      background-color: #121b44;
+      border: 5px solid #FFCE00;
     }
 
     label {
@@ -39,7 +44,8 @@
       color: white;
     }
 
-    h2,p {
+    h2,
+    p {
       color: white;
     }
 
@@ -95,6 +101,7 @@
       height: 600px;
       /* Adjust as needed */
       border: 1px solid #ccc;
+      background-color: white;
     }
   </style>
 </head>
