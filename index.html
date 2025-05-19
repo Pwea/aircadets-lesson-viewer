@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Air Cadet Lesson Viewer</title>
+<style>
+  body {
+    font-family: sans-serif;
+  }
+  .form-container {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  select, input[type="number"], button {
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    box-sizing: border-box;
+  }
+  button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+  }
+  button[type="submit"]:hover {
+    background-color: #0056b3;
+  }
+  .warning-label {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 5px;
+    padding: 10px;
+    border: 1px solid red;
+    background-color: #ffe0e0;
+    border-radius: 3px;
+    position: relative;
+  }
+  .warning-close-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    border: none;
+    background: none;
+    color: #555;
+    cursor: pointer;
+    font-size: 1em;
+    line-height: 1;
+  }
+  .pdf-viewer {
+    width: 100%;
+    height: 600px; /* Adjust as needed */
+    border: 1px solid #ccc;
+  }
+</style>
+</head>
+<body>
+
+<div class="form-container">
+  <label for="lesson-type">Lesson Type:</label>
+  <select id="lesson-type">
+    <option value="M">M</option>
+    <option value="C">C</option>
+  </select>
+
+  <label for="lesson-number">Lesson Number (XXX.XX):</label>
+  <input type="text" id="lesson-number" pattern="\d{3}\.\d{2}" placeholder="e.g., 123.45">
+
+  <div id="warning" class="warning-label" style="display: none;">
+    Invalid lesson number format. Please use XXX.XX format.
+    <button id="close-warning" class="warning-close-button">&times;</button>
+  </div>
+
+  <button type="submit" id="submit-button">View Lesson</button>
+</div>
+
+<div id="pdf-preview" style="display: none;">
+  <embed id="pdf-embed" type="application/pdf" class="pdf-viewer">
+  <p><a id="pdf-download-link" href="#" download="lesson.pdf">Download PDF</a></p>
+</div>
+
+<script>
+  const lessonTypeSelect = document.getElementById('lesson-type');
+  const lessonNumberInput = document.getElementById('lesson-number');
+  const submitButton = document.getElementById('submit-button');
+  const warningLabel = document.getElementById('warning');
+  const closeWarningButton = document.getElementById('close-warning');
+  const pdfPreviewDiv = document.getElementById('pdf-preview');
+  const pdfEmbed = document.getElementById('pdf-embed');
+  const pdfDownloadLink = document.getElementById('pdf-download-link');
+
+  closeWarningButton.addEventListener('click', () => {
+    warningLabel.style.display = 'none';
+  });
+
+  submitButton.addEventListener('click', () => {
+    const lessonType = lessonTypeSelect.value;
+    const lessonNumber = lessonNumberInput.value;
+    const numberRegex = /^\d{3}\.\d{2}$/;
+
+    if (!numberRegex.test(lessonNumber)) {
+      warningLabel.style.display = 'block';
+      pdfPreviewDiv.style.display = 'none';
+      return;
+    }
+
+    warningLabel.style.display = 'none';
+    const pdfUrl = `https://34aircadets.ca/storage/app/media/old-site/resources/ig/${lessonType}${lessonNumber}.pdf`;
+	
+
+
+	
+    pdfEmbed.src = pdfUrl;
+    pdfDownloadLink.href = pdfUrl;
+    pdfPreviewDiv.style.display = 'block';
+  });
+</script>
+
+</body>
+</html>
