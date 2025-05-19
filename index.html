@@ -23,13 +23,6 @@
       gap: 10px;
     }
 
-    @media (pointer: coarse) {
-      /* mobile device */
-      .form-container {
-        flex-direction: column;
-      }
-    }
-
     .form-container>div {
       flex: 1;
       padding: 10px;
@@ -102,6 +95,21 @@
       /* Adjust as needed */
       border: 1px solid #ccc;
       background-color: white;
+    }
+
+    @media (pointer: coarse) {
+      /* mobile device */
+      .form-container {
+        flex-direction: column;
+      }
+
+      h2 {
+        font-size: 2.5em;
+      }
+
+      p, a, label {
+        font-size: 1.5em;
+      }
     }
   </style>
 </head>
