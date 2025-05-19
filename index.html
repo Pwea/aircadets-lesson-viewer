@@ -3,9 +3,14 @@
 
 <head>
   <title>Air Cadet Lesson Viewer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
   <style>
     body {
-      font-family: sans-serif;
+      font-family: "Poppins", sans-serif;
     }
 
     .form-container {
@@ -17,7 +22,7 @@
       flex-direction: row;
     }
 
-    .form-container > div {
+    .form-container>div {
       flex: 1;
       margin-right: 20px;
     }
@@ -83,6 +88,7 @@
 
   <div class="form-container">
     <div>
+      <h2>Lesson Selection</h2>
       <label for="lesson-type">Lesson Type:</label>
       <select id="lesson-type">
         <option value="M">M - Advanced Lesson</option>
@@ -92,12 +98,11 @@
       <label for="lesson-number">Lesson Number (XXX.XX):</label>
       <input type="text" id="lesson-number" pattern="\d{3}\.\d{2}" placeholder="e.g., 123.45">
 
+      <button type="submit" id="submit-button">View Lesson</button>
       <div id="warning" class="warning-label" style="display: none;">
         Invalid lesson number format. Please use XXX.XX format.
         <button id="close-warning" class="warning-close-button">&times;</button>
       </div>
-
-      <button type="submit" id="submit-button">View Lesson</button>
     </div>
     <div>
       <h2>Lesson Information</h2>
@@ -108,9 +113,15 @@
   </div>
 
   <div id="pdf-preview" style="display: none;">
-    <embed id="pdf-embed" type="application/pdf" class="pdf-viewer">
     <p><a id="pdf-download-link" href="#" download="lesson.pdf">Download PDF</a></p>
+    <embed id="pdf-embed" type="application/pdf" class="pdf-viewer">
   </div>
+
+  <hr>
+  <footer>
+    <p>Made by <b>Sgt Audino</b> + <b>Sgt Meilleur</b></p>
+    <p>Contact: <a href="mailto:qaudino672@cdt.cadets.gc.ca">qaudino672@cdt.cadets.gc.ca</a></p>
+  </footer>
 
   <script>
     const lessonData = {
@@ -213,15 +224,15 @@
       const lessonNumber = lessonNumberInput.value;
       const numberRegex = /^\d{3}\.\d{2}$/;
 
-      intendedLevelLabel.textContent = `Intended Level: ${lessonNumber[0]}`;
-      lessonTypeInfoLabel.textContent = `Lesson Type: ${lessonType === 'M' ? 'Advanced Lesson' : 'General Lesson'}`;
-      lessonDescriptionLabel.textContent = `Lesson Description: ${lessonData[`Level ${lessonNumber[0]}`][lessonNumber.slice(0, -3)] || 'Not Found'}`;
-
-      if (!numberRegex.test(lessonNumber)) {
+      if (!numberRegex.test(lessonNumber) || !lessonData[`Level ${lessonNumber[0]}`] || lessonNumber.slice(4) == 0) {
         warningLabel.style.display = 'block';
         pdfPreviewDiv.style.display = 'none';
         return;
       }
+
+      intendedLevelLabel.textContent = `Intended Level: ${lessonNumber[0]}`;
+      lessonTypeInfoLabel.textContent = `Lesson Type: ${lessonType === 'M' ? 'Advanced Lesson' : 'General Lesson'}`;
+      lessonDescriptionLabel.textContent = `Lesson Description: ${lessonData[`Level ${lessonNumber[0]}`][lessonNumber.slice(0, -3)] || 'Not Found'}`;
 
       warningLabel.style.display = 'none';
       const pdfUrl = `https://34aircadets.ca/storage/app/media/old-site/resources/ig/${lessonType}${lessonNumber}.pdf`;
