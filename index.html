@@ -17,13 +17,18 @@
       flex-direction: row;
     }
 
+    .form-container > div {
+      flex: 1;
+      margin-right: 20px;
+    }
+
     label {
       display: block;
       margin-bottom: 5px;
     }
 
     select,
-    input[type="number"],
+    input,
     button {
       padding: 8px;
       margin-bottom: 10px;
@@ -80,8 +85,8 @@
     <div>
       <label for="lesson-type">Lesson Type:</label>
       <select id="lesson-type">
-        <option value="M">M</option>
-        <option value="C">C</option>
+        <option value="M">M - Advanced Lesson</option>
+        <option value="C">C - General Lesson</option>
       </select>
 
       <label for="lesson-number">Lesson Number (XXX.XX):</label>
@@ -95,7 +100,10 @@
       <button type="submit" id="submit-button">View Lesson</button>
     </div>
     <div>
+      <h2>Lesson Information</h2>
+      <p id="lesson-type-info">Lesson Type: </p>
       <p id="intended-level">Intended Level: </p>
+      <p id="lesson-description">Lesson Description:</p>
     </div>
   </div>
 
@@ -105,6 +113,85 @@
   </div>
 
   <script>
+    const lessonData = {
+      "Level 1": {
+        "101": "Participate in Citizenship Activities",
+        "102": "Perform Community Service",
+        "103": "Participate as a Member of a Team",
+        "104": "Develop a Personal Activity Plan",
+        "105": "Participate in Recreational Sports",
+        "106": "Fire the Cadet Air Rifle",
+        "107": "Serve in an Air Cadet Squadron",
+        "108": "Participate in an ACR Parade",
+        "120": "Participate in CF Familiarization Activities",
+        "121": "Participate in Canadian Aviation, Aerospace and Aerodrome Community Familiarization Activities",
+        "129": "Communicate Using the Phonetic Alphabet and Numbers",
+        "130": "Participate in Aviation Activities",
+        "140": "Participate in Aerospace Activities",
+        "160": "Participate in Aerodrome Activities",
+        "190": "Participate in Field Exercise"
+      },
+      "Level 2": {
+        "201": "Identifying the Role of and Environmentally Conscious Citizen",
+        "202": "Perform Community Service",
+        "203": "Demonstrate Leadership Attributes Within a Peer Setting",
+        "204": "Update Personal Activity Plan",
+        "205": "Participate in Recreational Sports",
+        "206": "Fire the Cadet Air Rifle During Recreational Marksmanship",
+        "207": "Serve in an Air Cadet Squadron",
+        "208": "Execute Drill as a Member of a Squad",
+        "211": "Participate in Competitive Summer Biathlon Activities",
+        "230": "Discuss Canadian Aviation History",
+        "231": "Explain Principles of Flight",
+        "232": "Identify Characteristics of Piston-Powered Aircraft",
+        "240": "Participate in Aerospace Activities",
+        "260": "Participate in Aerodrome Operational Activities",
+        "270": "Discuss Aircraft Manufacturing and Maintenance",
+        "290": "Participate in a Field Exercise"
+      },
+      "Level 3": {
+        "301": "Recognize the Purpose of Service Groups Within Canada",
+        "302": "Perform Community Service",
+        "303": "Perform the Role of a Team Leader",
+        "304": "Update Personal Activity Plan",
+        "305": "Participate in Recreational Sports",
+        "306": "Fire the Cadet Air Rifle During Recreational Marksmanship",
+        "307": "Serve in Air Cadet Squadron",
+        "308": "Direct a Flight Prior to a Parade",
+        "309": "Instruct a Lesson",
+        "311": "Participate in a Recreational Summer Biathlon Activity",
+        "320": "Participate in Canadian Forces Familiarization Activities",
+        "331": "Describe Principles of Flight",
+        "336": "Identify Meteorological Conditions",
+        "337": "Demonstrate Air Navigation Skills",
+        "340": "Identify Aspects of Space Exploration",
+        "360": "Recognize Aspects of Aerodrome Operations",
+        "370": "Recognize Aspects of Aircraft Manufacturing and Maintenance",
+        "390": "Navigate a Route Using a Map and Compass"
+      },
+      "Level 4": {
+        "401": "Describe the Youth Justice System",
+        "402": "Perform Community Service",
+        "403": "Describe Needs and Expectations of Team Members",
+        "404": "Participate in the Cadet Fitness Assessment",
+        "405": "Participate in Organized Recreational Team Sports",
+        "406": "Participate in Recreational Marksmanship Activity",
+        "407": "Discuss Proficiency Level Four Training Opportunities",
+        "408": "Discuss Commanding a Flight on Parade",
+        "409": "Identify Methods of Instruction",
+        "420": "Describe Canadian Air Force Traditions",
+        "429": "Explain Regulations and Operating Procedures for Aviation Transmission and Licensing",
+        "431": "Explain Features of Wing Design",
+        "432": "Describe Fuel Systems",
+        "436": "Explain Winds",
+        "437": "Define Air Navigation Terms",
+        "440": "Identify Aerospace Materials",
+        "460": "Describe Aerodrome Operations Career Opportunities",
+        "470": "Discuss Aircraft Manufacturers",
+        "490": "Assemble an Emergency Survival Kit"
+      }
+    };
+
     const lessonTypeSelect = document.getElementById('lesson-type');
     const lessonNumberInput = document.getElementById('lesson-number');
     const submitButton = document.getElementById('submit-button');
@@ -114,6 +201,8 @@
     const pdfEmbed = document.getElementById('pdf-embed');
     const pdfDownloadLink = document.getElementById('pdf-download-link');
     const intendedLevelLabel = document.getElementById('intended-level');
+    const lessonTypeInfoLabel = document.getElementById('lesson-type-info');
+    const lessonDescriptionLabel = document.getElementById('lesson-description');
 
     closeWarningButton.addEventListener('click', () => {
       warningLabel.style.display = 'none';
@@ -125,6 +214,8 @@
       const numberRegex = /^\d{3}\.\d{2}$/;
 
       intendedLevelLabel.textContent = `Intended Level: ${lessonNumber[0]}`;
+      lessonTypeInfoLabel.textContent = `Lesson Type: ${lessonType === 'M' ? 'Advanced Lesson' : 'General Lesson'}`;
+      lessonDescriptionLabel.textContent = `Lesson Description: ${lessonData[`Level ${lessonNumber[0]}`][lessonNumber.slice(0, -3)] || 'Not Found'}`;
 
       if (!numberRegex.test(lessonNumber)) {
         warningLabel.style.display = 'block';
